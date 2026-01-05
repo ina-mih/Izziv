@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <h2>Login</h2>
+  <form (ngSubmit)="login()">
+    <input class="form-control mb-2" [(ngModel)]="email" name="email" placeholder="Email">
+    <input class="form-control mb-2" [(ngModel)]="password" name="password" type="password" placeholder="Password">
+    <button class="btn btn-primary">Login</button>
+  </form>
+  <hr>
+  <p>
+    Don’t have an account?
+    <a routerLink="/register">Register here</a>
+  </p>
+  <div class="text-danger mt-2">{{ error }}</div>
+</div>

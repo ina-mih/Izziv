@@ -1,0 +1,18 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+  <h1>Stock Overview</h1>
+</header>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Article</th>
+    <th>Location</th>
+    <th>Quantity</th>
+  </tr>
+  <tr *ngFor="let s of stock">
+    <td>{{ s.article}}</td>
+    <td>{{ s.location}}</td>
+    <td>{{ s.quantity }}</td>
+  </tr>
+</table>
+
+<p *ngIf="stock.length === 0">No stock available</p>

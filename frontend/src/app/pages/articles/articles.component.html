@@ -1,0 +1,31 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+  <h1>Articles</h1>
+</header>
+
+<form (ngSubmit)="submit()" class="p-3 mb-3 mt-4">
+  <input class="form-control mb-2" [(ngModel)]="form.name" name="name" placeholder="Name">
+  <input class="form-control mb-2" [(ngModel)]="form.description" name="description" placeholder="Description">
+  <input class="form-control mb-2" [(ngModel)]="form.ean" name="ean" placeholder="EAN">
+  <input class="form-control mb-2" [(ngModel)]="form.unit" name="unit" placeholder="Unit">
+  <button class="btn btn-primary">
+    {{ form.id ? 'Update' : 'Create' }}
+  </button>
+</form>
+
+<table class="p-3 table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>EAN</th>
+    <th>Unit</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let a of articles">
+    <td>{{ a.name }}</td>
+    <td>{{ a.ean }}</td>
+    <td>{{ a.unit }}</td>
+    <td>
+      <button class="btn btn-sm btn-warning me-2" (click)="edit(a)">Edit</button>
+      <button class="btn btn-sm btn-danger" (click)="delete(a.id)">Delete</button>
+    </td>
+  </tr>
+</table>

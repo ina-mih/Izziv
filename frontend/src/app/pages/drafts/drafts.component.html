@@ -1,0 +1,16 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+  <h1>Draft Documents</h1>
+</header>
+
+<div *ngFor="let d of drafts" class="card mb-2">
+  <div class="card-body">
+    <h5>{{ d.code }}</h5>
+    <p>Items: {{ d.items.length }}</p>
+
+    <button class="btn btn-primary" (click)="convert(d)">
+      Convert to Document
+    </button>
+  </div>
+</div>
+
+<p *ngIf="drafts.length === 0">No drafts available</p>

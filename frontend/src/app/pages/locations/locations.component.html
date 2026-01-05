@@ -1,0 +1,39 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+  <h1>Locations</h1>
+</header>
+
+<div class="container mt-4 p-3 mb-3">
+  <form (ngSubmit)="submit()" class="mb-3">
+    <input
+      class="form-control mb-2"
+      [(ngModel)]="form.code"
+      name="code"
+      placeholder="Location Code (ex. LOC-001)">
+
+    <input
+      class="form-control mb-2"
+      [(ngModel)]="form.name"
+      name="name"
+      placeholder="Location Name">
+
+    <button type="submit" class="btn btn-primary">
+      {{ form.id ? 'Update' : 'Create' }}
+    </button>
+  </form>
+</div>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let l of locations">
+    <td>{{ l.code }}</td>
+    <td>{{ l.name }}</td>
+    <td>
+      <button class="btn btn-sm btn-warning me-2" (click)="edit(l)">Edit</button>
+      <button class="btn btn-sm btn-danger" (click)="delete(l.id)">Delete</button>
+    </td>
+  </tr>
+</table>

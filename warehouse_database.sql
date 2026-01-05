@@ -1,0 +1,207 @@
+-- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+--
+-- Host: localhost    Database: warehouse_database
+-- ------------------------------------------------------
+-- Server version	8.0.44
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `articles`
+--
+CREATE DATABASE IF NOT EXISTS warehouse_database;
+USE warehouse_database;
+
+DROP TABLE IF EXISTS `articles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `articles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `ean` varchar(50) DEFAULT NULL,
+  `unit` varchar(50) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `articles`
+--
+
+LOCK TABLES `articles` WRITE;
+/*!40000 ALTER TABLE `articles` DISABLE KEYS */;
+INSERT INTO `articles` VALUES (1,'Test Article','Demo product','1234567890123','pcs',1),(2,'Milk 1L','Updated description','9876543210123','l',1),(3,'Bread','Whole Grain Bread','4007933131036','pcs',1),(4,'Wine','Red Wine','6001108037626','l',1);
+/*!40000 ALTER TABLE `articles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document_items`
+--
+
+DROP TABLE IF EXISTS `document_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `document_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `document_id` int NOT NULL,
+  `article_id` int NOT NULL,
+  `from_location_id` int NOT NULL,
+  `to_location_id` int NOT NULL,
+  `quantity` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_item_document` (`document_id`),
+  KEY `fk_item_article` (`article_id`),
+  KEY `fk_item_from_location` (`from_location_id`),
+  KEY `fk_item_to_location` (`to_location_id`),
+  CONSTRAINT `fk_item_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
+  CONSTRAINT `fk_item_document` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`),
+  CONSTRAINT `fk_item_from_location` FOREIGN KEY (`from_location_id`) REFERENCES `locations` (`id`),
+  CONSTRAINT `fk_item_to_location` FOREIGN KEY (`to_location_id`) REFERENCES `locations` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document_items`
+--
+
+LOCK TABLES `document_items` WRITE;
+/*!40000 ALTER TABLE `document_items` DISABLE KEYS */;
+INSERT INTO `document_items` VALUES (1,1,1,1,2,10.00),(2,2,1,1,2,6.00),(3,3,1,1,2,2.00),(4,4,1,1,3,1.00),(5,5,1,1,2,1.00),(6,6,1,1,3,3.00),(7,6,1,1,3,3.00),(8,19,1,2,3,2.00),(9,20,1,2,1,1.00),(10,21,1,1,2,1.00),(11,22,1,2,3,30.00),(12,23,1,2,3,30.00),(13,23,1,2,3,30.00),(14,24,1,1,2,21.00),(15,25,1,2,1,500.00),(16,26,1,2,1,500.00),(17,26,1,2,3,50.00),(18,27,1,2,1,500.00),(19,27,1,2,3,50.00),(20,29,1,2,1,500.00),(21,29,1,2,3,50.00),(22,29,1,1,3,600.00),(23,30,1,1,3,600.00),(24,31,1,1,2,1.00),(25,31,1,1,2,1000.00),(26,32,1,1,2,6.00),(27,32,1,1,2,698.00),(28,33,1,1,2,6.00),(29,33,1,1,2,698.00),(30,33,1,1,2,698.00),(31,34,1,1,2,2000.00),(32,35,1,3,1,2.00),(33,35,1,3,1,20000.00),(34,36,1,1,2,200.00),(35,37,1,1,2,5000.00),(36,38,1,1,2,2.00),(37,38,1,1,2,2000.00),(38,39,1,1,3,500.00),(39,40,1,1,2,2.00),(40,41,1,1,2,2.00),(41,41,1,1,2,2.00),(42,41,1,1,2,2000.00),(43,42,1,1,2,2.00),(44,42,1,1,2,2.00),(45,42,1,1,2,2000.00),(46,43,1,1,2,2.00),(47,43,1,1,2,2.00),(48,43,1,1,2,2000.00),(49,44,1,1,2,2.00),(50,44,1,1,2,2.00),(51,44,1,1,2,2000.00),(52,45,1,1,2,2.00),(53,45,1,1,2,2.00),(54,45,1,1,2,2000.00),(55,46,1,1,2,2.00),(56,46,1,1,2,2.00),(57,46,1,1,2,2000.00),(58,47,1,1,2,2.00),(59,47,1,1,2,2.00),(60,47,1,1,2,2000.00),(61,48,1,2,3,2.00),(62,49,1,2,3,3.00),(63,123,1,1,2,3.00);
+/*!40000 ALTER TABLE `document_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `documents`
+--
+
+DROP TABLE IF EXISTS `documents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `confirmed_date` datetime DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'DRAFT',
+  `confirmed_by` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`),
+  KEY `fk_document_user` (`confirmed_by`),
+  CONSTRAINT `fk_document_user` FOREIGN KEY (`confirmed_by`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `documents`
+--
+
+LOCK TABLES `documents` WRITE;
+/*!40000 ALTER TABLE `documents` DISABLE KEYS */;
+INSERT INTO `documents` VALUES (1,'DOC-001','2025-12-22 04:31:55','2025-12-22 04:32:19','CONFIRMED',1),(2,'DOC-002','2025-12-27 19:26:41','2026-01-03 19:40:32','CONFIRMED',1),(3,'DOC-003','2025-12-28 02:07:18','2025-12-28 02:35:45','CONFIRMED',1),(4,'DOC-005','2026-01-03 18:41:12','2026-01-03 19:45:21','CONFIRMED',1),(5,'DOC-006','2026-01-03 18:49:51','2026-01-03 19:50:02','CONFIRMED',1),(6,'DOC-004','2026-01-03 18:52:18','2026-01-03 18:53:24','CONFIRMED',1),(19,'DOC-007','2026-01-03 19:22:27','2026-01-03 19:22:40','CONFIRMED',1),(20,'DOC-008','2026-01-03 19:24:11',NULL,'NOT CONFIRMED',NULL),(21,'DOC-009','2026-01-03 19:26:50',NULL,'NOT CONFIRMED',NULL),(22,'DOC-010','2026-01-03 19:29:24','2026-01-03 19:29:40','CONFIRMED',1),(23,'DOC-011','2026-01-03 19:36:01','2026-01-03 22:12:53','CONFIRMED',1),(24,'DOC-012','2026-01-03 22:09:39','2026-01-03 22:12:49','CONFIRMED',1),(25,'DOC-013','2026-01-03 22:13:15','2026-01-04 00:15:59','CONFIRMED',1),(26,'DOC-014','2026-01-03 22:17:08',NULL,'NOT CONFIRMED',NULL),(27,'DOC-015','2026-01-03 22:18:07',NULL,'NOT CONFIRMED',NULL),(29,'DOC-016','2026-01-03 22:18:40',NULL,'NOT CONFIRMED',NULL),(30,'DOC-017','2026-01-03 22:21:35',NULL,'NOT CONFIRMED',NULL),(31,'DOC-018','2026-01-03 22:33:59','2026-01-03 22:34:26','CONFIRMED',1),(32,'DOC-019','2026-01-03 22:48:26','2026-01-03 22:48:32','CONFIRMED',1),(33,'DOC-020','2026-01-03 22:55:27','2026-01-03 22:55:31','CONFIRMED',1),(34,'DOC-021','2026-01-03 22:57:59','2026-01-03 22:58:31','CONFIRMED',1),(35,'DOC-022','2026-01-03 22:58:25','2026-01-03 23:00:33','CONFIRMED',1),(36,'DOC-023','2026-01-03 23:01:06','2026-01-03 23:02:25','CONFIRMED',1),(37,'DOC-024','2026-01-03 23:21:21','2026-01-03 23:24:10','CONFIRMED',1),(38,'DOC-025','2026-01-03 23:25:21','2026-01-03 23:25:26','CONFIRMED',1),(39,'DOC-026','2026-01-03 23:27:23','2026-01-03 23:27:26','CONFIRMED',1),(40,'DOC-027','2026-01-03 23:33:20','2026-01-04 00:15:01','CONFIRMED',2),(41,'DOC-028','2026-01-03 23:34:04','2026-01-03 23:34:23','CONFIRMED',1),(42,'DOC-029','2026-01-03 23:35:34','2026-01-03 23:35:56','CONFIRMED',1),(43,'DOC-030','2026-01-03 23:37:34','2026-01-03 23:37:52','CONFIRMED',1),(44,'DOC-031','2026-01-03 23:39:08','2026-01-03 23:39:21','CONFIRMED',1),(45,'DOC-032','2026-01-03 23:40:18','2026-01-03 23:40:32','CONFIRMED',1),(46,'DOC-033','2026-01-03 23:42:50','2026-01-03 23:42:55','CONFIRMED',1),(47,'DOC-034','2026-01-03 23:49:54',NULL,'NOT CONFIRMED',NULL),(48,'DOC-035','2026-01-04 00:36:14',NULL,'NOT CONFIRMED',NULL),(49,'DOC-038','2026-01-04 00:39:28',NULL,'NOT CONFIRMED',NULL),(123,'DOC-039','2026-01-04 02:44:30','2026-01-04 02:44:35','CONFIRMED',1);
+/*!40000 ALTER TABLE `documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `locations`
+--
+
+DROP TABLE IF EXISTS `locations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `locations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `locations`
+--
+
+LOCK TABLES `locations` WRITE;
+/*!40000 ALTER TABLE `locations` DISABLE KEYS */;
+INSERT INTO `locations` VALUES (1,'LOC-01','Main Warehouse'),(2,'LOC-02','Secondary Warehouse'),(3,'LOC-03','Third Warehouse'),(8,'LOC-04','Fourth Warehouse'),(9,'LOC-05','Fifth Warehouse');
+/*!40000 ALTER TABLE `locations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `stock`
+--
+
+DROP TABLE IF EXISTS `stock`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `article_id` int NOT NULL,
+  `location_id` int NOT NULL,
+  `quantity` decimal(10,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_article_location` (`article_id`,`location_id`),
+  KEY `fk_stock_location` (`location_id`),
+  CONSTRAINT `fk_stock_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
+  CONSTRAINT `fk_stock_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stock`
+--
+
+LOCK TABLES `stock` WRITE;
+/*!40000 ALTER TABLE `stock` DISABLE KEYS */;
+INSERT INTO `stock` VALUES (1,1,1,575.00),(2,2,1,0.00),(3,1,2,13531.00),(4,2,2,0.00),(5,3,1,0.00),(6,3,2,0.00),(8,1,3,500.00),(9,2,3,0.00),(10,3,3,0.00),(11,4,1,0.00),(12,4,2,0.00),(13,4,3,0.00),(42,1,8,0.00),(43,2,8,0.00),(44,3,8,0.00),(45,4,8,0.00),(49,1,9,0.00),(50,2,9,0.00),(51,3,9,0.00),(52,4,9,0.00);
+/*!40000 ALTER TABLE `stock` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'test@warehouse.com','$2a$12$ze61//of4IY0qVEomVA3d.RYWdnQ9TokqeNEd0o8dMk/oypCp0k.2','2025-12-22 04:08:33'),(2,'new@warehouse.com','$2b$10$1b1fsgXvmDYPKv6NTYZzsufZB/EzI5ul16P5NU3FnlT6jbbQ3Lw1i','2026-01-04 00:13:59'),(3,'newuser1@warehouse.com','$2b$10$Qn2kWLJ9KMsChHHnHttkfetxKz1GQzUOKXy5r30Uk3HKfUFq.wBI.','2026-01-04 00:29:50');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-05  4:43:45
