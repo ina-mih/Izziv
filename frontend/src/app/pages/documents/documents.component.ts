@@ -130,4 +130,10 @@ export class DocumentsComponent implements OnInit {
     return !!localStorage.getItem('token');
   }
 
+  reloadPage() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
 }

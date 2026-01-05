@@ -29,7 +29,7 @@
     <label class="p-3">Multiple items can be added!</label>
   </div>
 
-  <button onclick="window.location.reload()" class="btn btn-primary" (click)="createDocument()">Create Document</button>
+  <button class="btn btn-primary" (click)="reloadPage()" (click)="createDocument()">Create Document</button>
 </div>
 
 <div *ngIf="isLoggedIn()">
@@ -48,24 +48,49 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let d of documents">
-        <td>{{ d.code }}</td>
-        <td>{{ d.created_date | date:'short' }}</td>
-        <td *ngIf="d.status === 'NOT CONFIRMED'" style="background-color: #faabab;">{{ d.status }}</td>
-        <td *ngIf="d.status === 'CONFIRMED'" style="background-color: #a2f6a2;">{{ d.status }}</td>
-        <td>
-          {{ d.confirmed_date ? (d.confirmed_date | date:'short') : '-' }}
-        </td>
-        <td>{{ d.confirmed_by_email || '-' }}</td>
-        <td>
-          <button
-            *ngIf="d.status === 'NOT CONFIRMED'"
-            class="btn btn-sm btn-warning"
-            (click)="confirmExisting(d.id)">
-            Confirm
-          </button>
-        </td>
-      </tr>
+      <ng-container *ngFor="let d of documents">
+        <!-- Document row -->
+        <tr (click)="d.showItems = !d.showItems" style="cursor:pointer;">
+          <td>{{ d.code }}</td>
+          <td>{{ d.created_date | date:'short' }}</td>
+          <td [ngStyle]="{'background-color': d.status==='CONFIRMED' ? '#a2f6a2' : '#faabab'}">
+            {{ d.status }}
+          </td>
+          <td>{{ d.confirmed_date ? (d.confirmed_date | date:'short') : '-' }}</td>
+          <td>{{ d.confirmed_by_email || '-' }}</td>
+          <td>
+            <button *ngIf="d.status === 'NOT CONFIRMED'" class="btn btn-sm btn-warning"
+              (click)="confirmExisting(d.id); $event.stopPropagation();">
+              Confirm
+            </button>
+          </td>
+        </tr>
+
+        <!-- Items row -->
+        <tr *ngIf="d.showItems">
+          <td colspan="6">
+            <h5>Items in {{ d.code }}:</h5>
+            <table class="table table-sm table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th>From Location</th>
+                  <th>To Location</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of d.items">
+                  <td>{{ item.article_name }}</td>
+                  <td>{{ item.from_location_name }}</td>
+                  <td>{{ item.to_location_name }}</td>
+                  <td>{{ item.quantity }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

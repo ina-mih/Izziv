@@ -76,3 +76,33 @@ Spodnja slika prikazuje uspešno registracijo uporabnika `new3@warehouse.com` pr
 Spodnja slika prikazuje uspešno prijavo uporabnika `new3@warehouse.com` preko Postmana:
 
 ![Prijava](screenshots/login.png)
+
+## Ustvarjanje dokumenta
+
+Nov dokument lahko ustvarite tako, da vnesete kodo dokumenta (npr. `DOC-060` ali več, saj so bile številke manjše od 60 že ustvarjene v bazi med testiranjem).  
+
+Nato dodate artikle:  
+
+1. Izberete artikel.  
+2. Vnesete količino artikla.  
+3. Izberete iz katerega (`From`) in v kateri (`To`) skladišče bo artikel premaknjen.  
+4. Kliknete **Add Item**.  
+
+Po potrditvenem sporočilu lahko dodate poljubno število artiklov. Ko končate z dodajanjem artiklov, kliknete **Create Document**.  
+
+- Če je uporabnik prijavljen, se dokument ustvari v bazi.  
+- Če uporabnik ni prijavljen, se dokument shrani kot osnutek.  
+
+Prijavljeni uporabniki lahko:  
+
+- Vidijo vse dokumente.  
+- S klikom na kodo dokumenta prikažejo vse artikle, ki so vključeni v dokument kot je prikazano na spodnjem posnetku zaslona.  
+- Potrdijo obstoječe dokumente, kar premakne zalogo med skladišči.  
+
+![Items](screenshots/items.png)
+
+Če za izbran artikel ni dovolj zaloge, se prikaže napaka, kot je prikazano na spodnjem posnetku zaslona.
+
+![Document](screenshots/document.png)
+
+![Error](screenshots/alert.png)

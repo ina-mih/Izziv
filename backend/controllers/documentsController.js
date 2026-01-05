@@ -139,6 +139,19 @@ exports.getDocuments = async (req, res) => {
       ORDER BY d.created_date DESC
     `);
 
+    for (const doc of rows) {
+      const [items] = await db.query(`
+        SELECT di.*, a.name AS article_name, l_from.name AS from_location_name, l_to.name AS to_location_name
+        FROM document_items di
+        LEFT JOIN articles a ON di.article_id = a.id
+        LEFT JOIN locations l_from ON di.from_location_id = l_from.id
+        LEFT JOIN locations l_to ON di.to_location_id = l_to.id
+        WHERE di.document_id=?
+      `, [doc.id]);
+
+      doc.items = items;
+    }
+
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
