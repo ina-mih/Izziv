@@ -3,33 +3,32 @@
 </header>
 
 <div class="container mt-4 p-3 mb-3">
-  <div class="p-3 mb-3">
-  <div>
-    <input class="form-control mb-2" [(ngModel)]="document.code" placeholder="Document code (ex. DOC-001)">
+  <div class="p-3 mb-3" [formGroup]="documentForm">
+    <input class="form-control mb-2" formControlName="code" placeholder="Document code (ex. DOC-001)">
   </div>
-
+  <div class="p-3 mb-3" [formGroup]="itemForm">
     <h3>Add Items</h3>
-    <select class="form-select mb-2" #article>
+    <select class="form-select mb-2" formControlName="article_id">
       <option value="" disabled selected>Select an article</option>
       <option *ngFor="let a of articles" [value]="a.id">{{ a.name }}</option>
     </select>
-    <input #qty type="number" placeholder="Quantity" class="form-control mb-2">
+    <input formControlName="quantity" type="number" placeholder="Quantity" class="form-control mb-2">
 
-    <select class="form-select mb-2" [(ngModel)]="document.from_location_id" name="from">
+    <select class="form-select mb-2" formControlName="from_location_id">
       <option value="" disabled selected>From Location</option>
       <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
     </select>
 
-    <select class="form-select mb-2" [(ngModel)]="document.to_location_id" name="to">
+    <select class="form-select mb-2" formControlName="to_location_id">
       <option value="" disabled selected>To Location</option>
       <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
     </select>
 
-    <button class="btn btn-success mb-3" (click)="addItem(+article.value, +qty.value)">Add Item</button>
+    <button [disabled]="itemForm.invalid" class="btn btn-success mb-3" (click)="addItem()">Add Item</button>
     <label class="p-3">Multiple items can be added!</label>
   </div>
 
-  <button class="btn btn-primary" (click)="reloadPage()" (click)="createDocument()">Create Document</button>
+  <button [disabled]="documentForm.invalid" class="btn btn-primary" (click)="createDocument()">Create Document</button>
 </div>
 
 <div *ngIf="isLoggedIn()">

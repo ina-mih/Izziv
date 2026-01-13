@@ -78,17 +78,8 @@ exports.updateLocation = async (req, res) => {
 };
 
 exports.deleteLocation = async (req, res) => {
-  let conn;
   try {
     const { id } = req.params;
-
-    conn = await db.getConnection();
-    await conn.beginTransaction();
-
-    await conn.query(
-      'DELETE FROM stock WHERE location_id = ?',
-      [id]
-    );
 
     const [result] = await conn.query(
       'DELETE FROM locations WHERE id = ?',
@@ -100,13 +91,9 @@ exports.deleteLocation = async (req, res) => {
       return res.status(404).json({ message: 'Location not found' });
     }
 
-    await conn.commit();
     res.json({ message: 'Location and related stock deleted successfully' });
 
   } catch (err) {
-    await conn.rollback();
     res.status(500).json({ error: err.message });
-  } finally {
-    if (conn) conn.release();
   }
 };

@@ -7,11 +7,25 @@
     <th>Article</th>
     <th>Location</th>
     <th>Quantity</th>
+    <th>New Quantity</th>
+    <th>Action</th>
   </tr>
-  <tr *ngFor="let s of stock">
-    <td>{{ s.article}}</td>
-    <td>{{ s.location}}</td>
+  <tr *ngFor="let s of stock; let i = index">
+    <td>{{ s.article }}</td>
+    <td>{{ s.location }}</td>
     <td>{{ s.quantity }}</td>
+    <td>
+      <input type="number"
+             class="form-control"
+             [formControl]="getQuantityControl(i)">
+    </td>
+    <td>
+      <button class="btn btn-primary"
+              (click)="updateStock(i)"
+              [disabled]="getQuantityControl(i).invalid">
+        Update
+      </button>
+    </td>
   </tr>
 </table>
 

@@ -50,6 +50,10 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/stock`);
   }
 
+  updateStock(payload: { article_id: number; location_id: number; quantity: number }) {
+    return this.http.patch(`${this.baseUrl}/stock/update`, payload);
+  }
+
   createDocument(data: any) {
     return this.http.post(`${this.baseUrl}/documents`, data);
   }

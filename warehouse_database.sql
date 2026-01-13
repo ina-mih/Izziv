@@ -153,8 +153,8 @@ CREATE TABLE `stock` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_article_location` (`article_id`,`location_id`),
   KEY `fk_stock_location` (`location_id`),
-  CONSTRAINT `fk_stock_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
-  CONSTRAINT `fk_stock_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
+  CONSTRAINT `fk_stock_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_stock_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -204,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-05 15:45:25
+-- Dump completed on 2026-01-12 22:52:43

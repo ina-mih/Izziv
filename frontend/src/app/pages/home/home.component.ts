@@ -12,7 +12,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class HomeComponent {
   constructor(private router: Router) {}
-
+  
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
+  }
+  
   navigateTo(path: string) {
     this.router.navigate([path]);
   }

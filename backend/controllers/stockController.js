@@ -5,6 +5,8 @@ exports.getAllStock = async (req, res) => {
     const [rows] = await db.query(`
       SELECT 
         s.id,
+        a.id AS article_id,
+        l.id AS location_id,
         a.name AS article,
         l.name AS location,
         s.quantity
