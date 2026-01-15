@@ -3,21 +3,25 @@
 </header>
 
 <div class="container mt-4 p-3 mb-3">
-  <form (ngSubmit)="submit()" class="mb-3">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="mb-3">
     <input
       class="form-control mb-2"
-      [(ngModel)]="form.code"
-      name="code"
-      placeholder="Location Code (ex. LOC-001)">
+      formControlName="code"
+      placeholder="Location Code (ex. LOC-001) (3 to 7 chars)">
+    <div class="text-danger mb-2" *ngIf="f['code'].touched && f['code'].invalid">
+      Code is required (between 3 and 7 characters)
+    </div>
 
     <input
       class="form-control mb-2"
-      [(ngModel)]="form.name"
-      name="name"
-      placeholder="Location Name">
+      formControlName="name"
+      placeholder="Location Name (3 to 20 chars)">
+    <div class="text-danger mb-2" *ngIf="f['name'].touched && f['name'].invalid">
+      Name is required (between 3 and 20 characters)
+    </div>
 
-    <button type="submit" class="btn btn-primary">
-      {{ form.id ? 'Update' : 'Create' }}
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !form.dirty">
+      {{ form.value.id ? 'Update' : 'Create' }}
     </button>
   </form>
 </div>

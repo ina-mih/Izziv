@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api';
 import { RouterModule } from '@angular/router';
@@ -8,31 +8,35 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {
 
-  email = '';
-  password = '';
+  form!: FormGroup;
   error = '';
   success = '';
 
   constructor(
     private api: ApiService,
+    private fb: FormBuilder,
     private router: Router
   ) {}
 
+  ngOnInit() {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
+
   register() {
+    if (this.form.invalid) return;
+
     this.error = '';
     this.success = '';
 
-    if (!this.email || !this.password) {
-      this.error = 'Email and password are required';
-      return;
-    }
-
-    this.api.register(this.email, this.password).subscribe({
+    this.api.register(this.form.value.email, this.form.value.password).subscribe({
       next: () => {
         this.success = 'Registration successful. You can now log in.';
         setTimeout(() => {
@@ -43,5 +47,9 @@ export class RegisterComponent {
         this.error = err.error?.message || 'Registration failed';
       }
     });
+  }
+
+  get f() {
+    return this.form.controls;
   }
 }

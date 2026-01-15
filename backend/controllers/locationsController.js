@@ -81,13 +81,13 @@ exports.deleteLocation = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [result] = await conn.query(
+    const [result] = await db.query(
       'DELETE FROM locations WHERE id = ?',
       [id]
     );
 
     if (result.affectedRows === 0) {
-      await conn.rollback();
+      await db.rollback();
       return res.status(404).json({ message: 'Location not found' });
     }
 

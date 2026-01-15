@@ -2,13 +2,29 @@
   <h1>Articles</h1>
 </header>
 
-<form (ngSubmit)="submit()" class="p-3 mb-3 mt-4">
-  <input class="form-control mb-2" [(ngModel)]="form.name" name="name" placeholder="Name">
-  <input class="form-control mb-2" [(ngModel)]="form.description" name="description" placeholder="Description">
-  <input class="form-control mb-2" [(ngModel)]="form.ean" name="ean" placeholder="EAN">
-  <input class="form-control mb-2" [(ngModel)]="form.unit" name="unit" placeholder="Unit">
-  <button class="btn btn-primary">
-    {{ form.id ? 'Update' : 'Create' }}
+<form [formGroup]="form" (ngSubmit)="submit()" class="p-3 mb-3 mt-4">
+  <input class="form-control mb-2" formControlName="name" placeholder="Name (3 to 10 chars)">
+  <div class="text-danger mb-2"
+       *ngIf="f['name'].touched && f['name'].invalid">
+    Name is required (between 3 and 10 characters)
+  </div>
+  <input class="form-control mb-2" formControlName="description" placeholder="Description (max 20 chars)">
+  <div class="text-danger mb-2"
+       *ngIf="f['description'].touched && f['description'].invalid">
+    Description is limited to 20 characters maximum
+  </div>
+  <input class="form-control mb-2" formControlName="ean" placeholder="EAN (8 to 13 digits)">
+  <div class="text-danger mb-2"
+       *ngIf="f['ean'].touched && f['ean'].invalid">
+    EAN must be 8–13 digits
+  </div>
+  <input class="form-control mb-2" formControlName="unit" placeholder="Unit">
+  <div class="text-danger mb-2"
+       *ngIf="f['unit'].touched && f['unit'].invalid">
+    Unit is required
+  </div>
+  <button class="btn btn-primary" [disabled]="form.invalid || !form.dirty">
+    {{ form.value.id ? 'Update' : 'Create' }}
   </button>
 </form>
 

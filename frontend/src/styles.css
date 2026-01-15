@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@import "nprogress/nprogress.css";
+@import "ngx-toastr/toastr";
+
+#nprogress .bar {
+  background: #00347c !important;
+  height: 6px !important;
+  box-shadow: 0 0 10px #00347c, 0 0 5px #ff0000;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #00347c, 0 0 5px #ff0000;
+}
+
+.toast {
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.toast-success {
+  background: #16a34a;
+}
+
+.toast-error {
+  background: #dc2626;
+}
+
+.toast-top-center {
+  top: 10px;
+}

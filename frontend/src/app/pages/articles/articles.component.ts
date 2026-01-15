@@ -1,29 +1,30 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api';
 
 @Component({
   standalone: true,
   selector: 'app-articles',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './articles.component.html'
 })
 export class ArticlesComponent implements OnInit {
 
   articles: any[] = [];
+  form!: FormGroup;
 
-  form = {
-    id: null,
-    name: '',
-    description: '',
-    ean: '',
-    unit: ''
-  };
-
-  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
+  constructor(private api: ApiService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.form = this.fb.group({
+      id: [null],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      description: ['', [Validators.required, Validators.maxLength(20)]],
+      ean: ['', [Validators.required, Validators.pattern(/^[0-9]{8,13}$/)]],
+      unit: ['', Validators.required]
+    });
+
     this.loadArticles();
   }
 
@@ -35,13 +36,15 @@ export class ArticlesComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.id) {
-      this.api.updateArticle(this.form.id, this.form).subscribe(() => {
+    if (this.form.invalid) return;
+
+    if (this.form.value.id) {
+      this.api.updateArticle(this.form.value.id, this.form.value).subscribe(() => {
         this.reset();
         this.loadArticles();
       });
     } else {
-      this.api.createArticle(this.form).subscribe(() => {
+      this.api.createArticle(this.form.value).subscribe(() => {
         this.reset();
         this.loadArticles();
       });
@@ -49,7 +52,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   edit(article: any) {
-    this.form = { ...article };
+    this.form.patchValue(article);
   }
 
   delete(id: number) {
@@ -61,12 +64,10 @@ export class ArticlesComponent implements OnInit {
   }
 
   reset() {
-    this.form = {
-      id: null,
-      name: '',
-      description: '',
-      ean: '',
-      unit: ''
-    };
+    this.form.reset();
+  }
+
+  get f() {
+    return this.form.controls;
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DraftDocumentService } from '../../services/draft-document.service';
 import { ApiService } from '../../services/api';
 import { DraftDocument } from '../../models/draft-document';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-drafts',
@@ -16,7 +17,8 @@ export class DraftsComponent implements OnInit {
 
   constructor(
     private draftService: DraftDocumentService,
-    private api: ApiService
+    private api: ApiService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -25,7 +27,7 @@ export class DraftsComponent implements OnInit {
 
   convert(draft: DraftDocument) {
     if (!draft.items.length) {
-      alert('Draft has no items');
+      this.toastr.error('Draft has no items');
       return;
     }
 
@@ -34,7 +36,7 @@ export class DraftsComponent implements OnInit {
     );
 
     if (invalid) {
-      alert('Draft items missing locations');
+      this.toastr.error('Draft items missing locations');
       return;
     }
 
@@ -50,9 +52,9 @@ export class DraftsComponent implements OnInit {
       next: () => {
         this.draftService.remove(draft.id);
         this.drafts = this.draftService.getAll();
-        alert('Draft converted to document');
+        this.toastr.success('Draft converted to document');
       },
-      error: err => console.error('CONVERT ERROR', err)
+      error: err => this.toastr.error('Failed to convert draft to document')
     });
   }
 }

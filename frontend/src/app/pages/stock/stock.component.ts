@@ -61,10 +61,8 @@ export class StockComponent implements OnInit {
       location_id: form.value.location_id,
       quantity: form.value.quantity
     };
-    console.log('Updating stock with payload:', payload);
     this.api.updateStock(payload).subscribe({
       next: () => {
-        alert('Stock updated');
         this.stock[index].quantity = form.value.quantity;
         form.get('quantity')?.reset(null);
         form.markAsPristine();

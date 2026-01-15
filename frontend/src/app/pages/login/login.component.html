@@ -1,9 +1,17 @@
 <div class="container mt-5">
   <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <input class="form-control mb-2" [(ngModel)]="email" name="email" placeholder="Email">
-    <input class="form-control mb-2" [(ngModel)]="password" name="password" type="password" placeholder="Password">
-    <button class="btn btn-primary">Login</button>
+  <form [formGroup]="form" (ngSubmit)="login()">
+    <input class="form-control mb-2" formControlName="email" placeholder="Email">
+    <div class="text-danger mb-2" *ngIf="f['email'].touched && f['email'].invalid">
+      <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+      <div *ngIf="f['email'].errors?.['email']">Enter a valid email</div>
+    </div>
+    <input class="form-control mb-2" formControlName="password" type="password" placeholder="Password">
+    <div class="text-danger mb-2" *ngIf="f['password'].touched && f['password'].invalid">
+      <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+      <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
+    </div>
+    <button class="btn btn-primary" [disabled]="form.invalid">Login</button>
   </form>
   <hr>
   <p>

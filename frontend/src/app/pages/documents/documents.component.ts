@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { DraftDocumentService } from '../../services/draft-document.service';
+import { ItemsListComponent } from '../../components/items-list.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ItemsListComponent],
   templateUrl: './documents.component.html'
 })
 export class DocumentsComponent implements OnInit {
@@ -29,8 +31,10 @@ export class DocumentsComponent implements OnInit {
     private api: ApiService,
     private cdr: ChangeDetectorRef,
     private draftService: DraftDocumentService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {}
+
   
   itemForm!: FormGroup;
   documentForm!: FormGroup;
@@ -63,31 +67,31 @@ export class DocumentsComponent implements OnInit {
 
   addItem() {
     if (this.itemForm.invalid) {
-      alert('Fill in all item fields correctly');
+      this.toastr.warning('Fill in all item fields correctly');
       return;
     }
 
     this.items.push(
       this.fb.group({
-        article_id: [this.itemForm.value.article_id, Validators.required],
-        from_location_id: [this.itemForm.value.from_location_id],
-        to_location_id: [this.itemForm.value.to_location_id],
+        article_id: [Number(this.itemForm.value.article_id), Validators.required],
+        from_location_id: [Number(this.itemForm.value.from_location_id)],
+        to_location_id: [Number(this.itemForm.value.to_location_id)],
         quantity: [this.itemForm.value.quantity, [Validators.required, Validators.min(1)]]
       })
     );
 
-    console.log('ITEMS', this.items.value);
-    alert('Item added to document');
+    this.toastr.success('Item added to document');
   }
+
 
   createDocument() {
     if (this.items.length === 0) {
-      alert('Add at least one item');
+      this.toastr.warning('Add at least one item');
       return;
     }
 
     const formValue = this.documentForm.value;
-    const isLoggedIn = !!localStorage.getItem('token');
+    const isLoggedIn = this.isLoggedIn();
 
     // not logged in
     if (!isLoggedIn) {
@@ -97,24 +101,18 @@ export class DocumentsComponent implements OnInit {
         items: formValue.items
       });
 
-      alert('Draft saved locally (not sent to server)');
+      this.toastr.success('Draft saved locally');
 
       this.documentForm.reset();
       this.items.clear();
       this.itemForm.reset();
-
       return;
     }
 
     // logged in
     this.api.createDocument({
       code: formValue.code,
-      items: formValue.items.map((i: {
-        article_id: number,
-        from_location_id: number,
-        to_location_id: number,
-        quantity: number
-      }) => ({
+      items: formValue.items.map((i: any) => ({
         article_id: i.article_id,
         from_location_id: i.from_location_id,
         to_location_id: i.to_location_id,
@@ -122,29 +120,31 @@ export class DocumentsComponent implements OnInit {
       }))
     }).subscribe({
       next: () => {
-        alert('Document created in database');
+        this.toastr.success('Document created');
         this.documentForm.reset();
         this.itemForm.reset();
         this.items.clear();
         this.loadDocuments();
       },
-      error: err => console.error('CREATE ERROR', err)
+      error: () => {
+        this.toastr.error('Failed to create document');
+      }
     });
   }
 
   confirmExisting(id: number) {
-    if (!confirm('Confirm this document?')) return;
+    if (!confirm('Confirm this document?')) return; 
 
     this.api.confirmDocument(id).subscribe({
       next: () => {
-        alert('Document confirmed');
+        this.toastr.success('Document confirmed');
         this.loadDocuments();
       },
       error: (err) => {
         if (err.status === 400) {
-          alert(err.error.message);
+          this.toastr.error(err.error.message);
         } else {
-          console.error('CONFIRM ERROR', err);
+          this.toastr.error('Failed to confirm document');
         }
       }
     });
@@ -152,6 +152,10 @@ export class DocumentsComponent implements OnInit {
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  get itemControls(): FormGroup[] {
+    return this.items.controls as FormGroup[];
   }
 
 }

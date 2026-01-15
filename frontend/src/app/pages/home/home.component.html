@@ -4,7 +4,7 @@
     <button class="btn btn-light" (click)="navigateTo('login')">Login</button>
   </div>
   <div *ngIf="isLoggedIn()">
-    <label>User is logged in!</label>
+    <button class="btn btn-light ms-2" (click)="logout()">Logout</button>
   </div>
 </header>
 

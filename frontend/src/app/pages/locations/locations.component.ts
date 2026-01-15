@@ -1,30 +1,32 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api';
 
 @Component({
   selector: 'app-locations',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './locations.component.html'
 })
 export class LocationsComponent implements OnInit {
 
   locations: any[] = [];
-
-  form = {
-    id: null,
-    code: '',
-    name: ''
-  };
+  form!: FormGroup;
 
   constructor(
     private api: ApiService,
+    private fb: FormBuilder, 
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    this.form = this.fb.group({
+      id: [null],
+      code: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(7)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    });
+
     this.loadLocations();
   }
 
@@ -36,13 +38,15 @@ export class LocationsComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.id) {
-      this.api.updateLocation(this.form.id, this.form).subscribe(() => {
+    if (this.form.invalid) return;
+    
+    if (this.form.value.id) {
+      this.api.updateLocation(this.form.value.id, this.form.value).subscribe(() => {
         this.reset();
         this.loadLocations();
       });
     } else {
-      this.api.createLocation(this.form).subscribe(() => {
+      this.api.createLocation(this.form.value).subscribe(() => {
         this.reset();
         this.loadLocations();
       });
@@ -50,7 +54,7 @@ export class LocationsComponent implements OnInit {
   }
 
   edit(location: any) {
-    this.form = { ...location };
+    this.form.patchValue(location);
   }
 
   delete(id: number) {
@@ -62,10 +66,10 @@ export class LocationsComponent implements OnInit {
   }
 
   reset() {
-    this.form = {
-      id: null,
-      code: '',
-      name: ''
-    };
+    this.form.reset();
+  }
+
+  get f() {
+    return this.form.controls;
   }
 }

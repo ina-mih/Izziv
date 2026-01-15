@@ -28,6 +28,13 @@
     <label class="p-3">Multiple items can be added!</label>
   </div>
 
+  <app-items-list
+    [items]="itemControls"
+    [articles]="articles"
+    [locations]="locations"
+    (removeItem)="items.removeAt($event)">
+  </app-items-list>
+
   <button [disabled]="documentForm.invalid" class="btn btn-primary" (click)="createDocument()">Create Document</button>
 </div>
 
