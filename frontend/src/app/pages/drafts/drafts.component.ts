@@ -4,11 +4,13 @@ import { DraftDocumentService } from '../../services/draft-document.service';
 import { ApiService } from '../../services/api';
 import { DraftDocument } from '../../models/draft-document';
 import { ToastrService } from 'ngx-toastr';
+import { ChangeDetectorRef } from '@angular/core';
+import { ItemsTableComponent } from '../../components/items-table.component';
 
 @Component({
   selector: 'app-drafts',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ItemsTableComponent],
   templateUrl: './drafts.component.html'
 })
 export class DraftsComponent implements OnInit {
@@ -18,10 +20,34 @@ export class DraftsComponent implements OnInit {
   constructor(
     private draftService: DraftDocumentService,
     private api: ApiService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) {}
 
+  articles: any[] = [];
+  locations: any[] = [];
+  articleMap = new Map<number, string>();
+  locationMap = new Map<number, string>();
+
   ngOnInit() {
+    this.drafts = this.draftService.getAll();
+
+    this.api.getArticles().subscribe(a => {
+      this.articles = a;
+      this.articleMap.clear();
+      a.forEach(x => this.articleMap.set(x.id, x.name));
+      this.cdr.detectChanges();
+    });
+
+    this.api.getLocations().subscribe(l => {
+      this.locations = l;
+      this.locationMap.clear();
+      l.forEach(x => this.locationMap.set(x.id, x.name));
+      this.cdr.detectChanges();
+    });
+  }
+
+  refresh() {
     this.drafts = this.draftService.getAll();
   }
 
@@ -51,10 +77,39 @@ export class DraftsComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.draftService.remove(draft.id);
-        this.drafts = this.draftService.getAll();
+        this.refresh();
+        this.cdr.detectChanges();
         this.toastr.success('Draft converted to document');
       },
       error: err => this.toastr.error('Failed to convert draft to document')
     });
   }
+
+  getArticleName(id: number): string {
+    const article = this.articles.find(a => a.id === id);
+    return article ? article.name : 'Unknown';
+  }
+
+  getLocationName(id: number): string {
+    const location = this.locations.find(l => l.id === id);
+    return location ? location.name : 'Unknown';
+  }
+
+  removeDraftItem(draftId: string, index: number) {
+    const draft = this.drafts.find(d => d.id === draftId);
+    if (!draft) return;
+    draft.items.splice(index, 1);
+    this.draftService.remove(draft.id);
+    this.draftService.save(draft);
+    this.refresh();
+    this.toastr.success('Item removed from draft');
+  }
+
+  removeDraft(draftId: string) {
+  if (!confirm('Are you sure you want to delete this draft?')) return;
+  this.draftService.remove(draftId);
+  this.refresh();
+  this.toastr.success('Draft removed successfully');
+  }
+
 }

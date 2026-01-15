@@ -37,7 +37,6 @@ export class ApiService {
     NProgress.start();
     return this.http.post(`${this.baseUrl}/auth/register`, { email, password }).pipe(
       tap(() => this.toastr.success('Account created')),
-      catchError(this.handleError('Registration failed')),
       finalize(() => NProgress.done())
     );
   }

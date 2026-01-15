@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { DraftDocumentService } from '../../services/draft-document.service';
-import { ItemsListComponent } from '../../components/items-list.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ItemsTableComponent } from '../../components/items-table.component';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ItemsListComponent],
+  imports: [CommonModule, ItemsTableComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './documents.component.html'
 })
 export class DocumentsComponent implements OnInit {
@@ -19,6 +19,9 @@ export class DocumentsComponent implements OnInit {
   articles: any[] = [];
   locations: any[] = [];
   documents: any[] = [];
+
+  articleMap = new Map<number, string>();
+  locationMap = new Map<number, string>();
 
   loadDocuments() {
     this.api.getDocuments().subscribe((docs: any) => {
@@ -35,7 +38,6 @@ export class DocumentsComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  
   itemForm!: FormGroup;
   documentForm!: FormGroup;
 
@@ -53,8 +55,19 @@ export class DocumentsComponent implements OnInit {
       items: this.fb.array([], Validators.required)
     });
 
-    this.api.getArticles().subscribe(a => this.articles = a);
-    this.api.getLocations().subscribe(l => this.locations = l);
+    this.api.getArticles().subscribe(a => {
+      this.articles = a;
+      this.articleMap.clear();
+      a.forEach(x => this.articleMap.set(x.id, x.name));
+      this.cdr.detectChanges();
+    });
+
+    this.api.getLocations().subscribe(l => {
+      this.locations = l;
+      this.locationMap.clear();
+      l.forEach(x => this.locationMap.set(x.id, x.name));
+      this.cdr.detectChanges();
+    });
 
     if (this.isLoggedIn()) {
       this.loadDocuments();

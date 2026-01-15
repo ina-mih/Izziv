@@ -2,14 +2,29 @@
   <h1>Draft Documents</h1>
 </header>
 
-<div *ngFor="let d of drafts" class="card mb-2">
+<div *ngFor="let d of drafts" class="card mb-3">
   <div class="card-body">
     <h5>{{ d.code }}</h5>
-    <p>Items: {{ d.items.length }}</p>
-    <button class="btn btn-primary" (click)="convert(d)">
+
+    <app-items-table
+      [items]="d.items"
+      [articleMap]="articleMap"
+      [locationMap]="locationMap"
+      [removable]="true"
+      (remove)="removeDraftItem(d.id, $event)">
+    </app-items-table>
+
+    <p *ngIf="!d.items.length">No items in this draft</p>
+
+    <button class="btn btn-primary me-2 mt-2" (click)="convert(d)">
       Convert to Document
     </button>
+
+    <button class="btn btn-danger mt-2" (click)="removeDraft(d.id)">
+      Remove Draft
+    </button>
+
   </div>
 </div>
 
-<p *ngIf="drafts.length === 0">No drafts available</p>
+<p *ngIf="!drafts.length">No drafts available</p>

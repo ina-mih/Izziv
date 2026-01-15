@@ -3,18 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import NProgress from 'nprogress';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 NProgress.configure({ showSpinner: false });
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ToastrModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
   
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
@@ -29,6 +30,7 @@ export class HomeComponent {
     localStorage.removeItem('token');
     this.router.navigate(['/home']);
     NProgress.done();
+    this.toastr.success('Logged out successfully', 'Logout');
   }
   
 }

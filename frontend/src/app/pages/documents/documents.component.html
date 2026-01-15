@@ -28,12 +28,13 @@
     <label class="p-3">Multiple items can be added!</label>
   </div>
 
-  <app-items-list
+  <app-items-table
     [items]="itemControls"
-    [articles]="articles"
-    [locations]="locations"
-    (removeItem)="items.removeAt($event)">
-  </app-items-list>
+    [articleMap]="articleMap"
+    [locationMap]="locationMap"
+    [removable]="true"
+    (remove)="items.removeAt($event)">
+  </app-items-table>
 
   <button [disabled]="documentForm.invalid" class="btn btn-primary" (click)="createDocument()">Create Document</button>
 </div>
@@ -76,24 +77,13 @@
         <tr *ngIf="d.showItems">
           <td colspan="6">
             <h5>Items in {{ d.code }}:</h5>
-            <table class="table table-sm table-bordered mb-0">
-              <thead>
-                <tr>
-                  <th>Article</th>
-                  <th>From Location</th>
-                  <th>To Location</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of d.items">
-                  <td>{{ item.article_name }}</td>
-                  <td>{{ item.from_location_name }}</td>
-                  <td>{{ item.to_location_name }}</td>
-                  <td>{{ item.quantity }}</td>
-                </tr>
-              </tbody>
-            </table>
+
+            <app-items-table
+              [items]="d.items"
+              [articleMap]="articleMap"
+              [locationMap]="locationMap">
+            </app-items-table>
+
           </td>
         </tr>
       </ng-container>
