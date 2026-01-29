@@ -6,49 +6,67 @@
 
   <p-card header="Create Document" class="mb-4">
     <div [formGroup]="documentForm">
-      <input
-        pInputText
-        formControlName="code"
-        placeholder="Document code (ex. DOC-001)"
-        class="w-full mb-3">
+
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="code"
+          formControlName="code"
+          class="w-full"
+          autocomplete="off">
+        <label for="code">Document code (ex. DOC-001)</label>
+      </p-floatlabel>
+
     </div>
 
     <p-card header="Add Items" class="mb-4">
       <div [formGroup]="itemForm">
 
-        <p-select
-          formControlName="article_id"
-          [options]="articles"
-          optionLabel="name"
-          optionValue="id"
-          placeholder="Select an article"
-          class="w-full mb-3">
-        </p-select>
+        <p-floatlabel variant="on" class="mb-3">
+          <p-select
+            id="article"
+            formControlName="article_id"
+            [options]="articles"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full">
+          </p-select>
+          <label for="article">Article</label>
+        </p-floatlabel>
 
-        <p-inputNumber
-          formControlName="quantity"
-          [min]="1"
-          placeholder="Quantity"
-          styleClass="w-full mb-3">
-        </p-inputNumber>
+        <p-floatlabel variant="on" class="mb-3">
+          <p-inputNumber
+            id="quantity"
+            formControlName="quantity"
+            [min]="1"
+            styleClass="w-full">
+          </p-inputNumber>
+          <label for="quantity">Quantity</label>
+        </p-floatlabel>
 
-        <p-select
-          formControlName="from_location_id"
-          [options]="locations"
-          optionLabel="name"
-          optionValue="id"
-          placeholder="From location"
-          class="w-full mb-3">
-        </p-select>
+        <p-floatlabel variant="on" class="mb-3">
+          <p-select
+            id="fromLocation"
+            formControlName="from_location_id"
+            [options]="locations"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full">
+          </p-select>
+          <label for="fromLocation">From location</label>
+        </p-floatlabel>
 
-        <p-select
-          formControlName="to_location_id"
-          [options]="locations"
-          optionLabel="name"
-          optionValue="id"
-          placeholder="To location"
-          class="w-full mb-3">
-        </p-select>
+        <p-floatlabel variant="on" class="mb-3">
+          <p-select
+            id="toLocation"
+            formControlName="to_location_id"
+            [options]="locations"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full">
+          </p-select>
+          <label for="toLocation">To location</label>
+        </p-floatlabel>
 
         <p-button
           label="Add Item"
@@ -111,7 +129,6 @@
         <tr (click)="d.showItems = !d.showItems" style="cursor:pointer">
 
           <td>{{ d.code }}</td>
-
           <td>{{ d.created_date | date:'short' }}</td>
 
           <td>
@@ -142,7 +159,6 @@
 
         <tr *ngIf="d.showItems">
           <td colspan="6">
-
             <p-card class="mt-2" header="Items in {{ d.code }}">
               <app-items-table
                 [items]="d.items"
@@ -150,7 +166,6 @@
                 [locationMap]="locationMap">
               </app-items-table>
             </p-card>
-
           </td>
         </tr>
       </ng-template>

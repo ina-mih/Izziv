@@ -8,12 +8,13 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { RippleModule } from 'primeng/ripple';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   standalone: true,
   selector: 'app-articles',
   imports: [CommonModule, ReactiveFormsModule,
-    InputTextModule, ButtonModule, CardModule, TableModule, RippleModule
+    InputTextModule, ButtonModule, CardModule, TableModule, RippleModule, FloatLabelModule
   ],
   templateUrl: './articles.component.html'
 })

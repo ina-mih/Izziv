@@ -5,8 +5,10 @@
     <form [formGroup]="form" (ngSubmit)="register()" class="flex flex-column gap-3">
 
       <div class="flex flex-column">
-        <label for="email">Email</label>
-        <input pInputText id="email" formControlName="email" placeholder="Enter your email" />
+        <p-floatlabel variant="on">
+          <input pInputText id="email" formControlName="email" autocomplete="off" class="w-full"/>
+          <label for="email">Email</label>
+        </p-floatlabel>
         <small class="p-error" *ngIf="f['email'].touched && f['email'].invalid">
           <span *ngIf="f['email'].errors?.['required']">Email is required</span>
           <span *ngIf="f['email'].errors?.['email']">Enter a valid email</span>
@@ -14,8 +16,10 @@
       </div>
 
       <div class="flex flex-column">
-        <label for="password">Password</label>
-        <p-password id="password" formControlName="password" feedback="false" placeholder="Enter your password"></p-password>
+        <p-floatlabel variant="on">
+          <p-password id="password" formControlName="password" feedback="false"></p-password>
+          <label for="password">Password</label>
+        </p-floatlabel>
         <small class="p-error" *ngIf="f['password'].touched && f['password'].invalid">
           <span *ngIf="f['password'].errors?.['required']">Password is required</span>
           <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>

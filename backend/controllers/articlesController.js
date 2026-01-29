@@ -35,9 +35,12 @@ exports.createArticle = async (req, res) => {
       return res.status(400).json({ message: 'Name and unit are required' });
     }
 
+    const safeDescription = description || '';
+    const safeEan = ean || '';
+
     const [result] = await db.query(
       'INSERT INTO articles (name, description, ean, unit) VALUES (?, ?, ?, ?)',
-      [name, description, ean, unit]
+      [name, safeDescription, safeEan, unit]
     );
 
     const articleId = result.insertId;
@@ -62,7 +65,7 @@ exports.updateArticle = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, ean, unit, is_active } = req.body;
-
+    
     const [result] = await db.query(
       `UPDATE articles 
        SET name=?, description=?, ean=?, unit=?, is_active=? 

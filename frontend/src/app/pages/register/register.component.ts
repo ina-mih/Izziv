@@ -10,6 +10,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { RippleModule } from 'primeng/ripple';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ import { RippleModule } from 'primeng/ripple';
     PasswordModule,
     ButtonModule,
     CardModule,
-    RippleModule
+    RippleModule,
+    FloatLabelModule
   ],
   templateUrl: './register.component.html'
 })

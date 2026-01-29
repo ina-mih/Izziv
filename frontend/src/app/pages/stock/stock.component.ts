@@ -8,12 +8,13 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { RippleModule } from 'primeng/ripple';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   standalone: true,
   selector: 'app-stock',
   imports: [CommonModule, ReactiveFormsModule,
-    InputNumberModule, ButtonModule, TableModule, CardModule, RippleModule
+    InputNumberModule, ButtonModule, TableModule, CardModule, RippleModule, FloatLabelModule
   ],
   templateUrl: './stock.component.html'
 })

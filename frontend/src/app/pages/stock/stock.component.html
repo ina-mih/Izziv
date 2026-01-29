@@ -19,12 +19,14 @@
         <td>{{ s.quantity }}</td>
 
         <td>
-          <p-inputNumber
-            [formControl]="getQuantityControl(i)"
-            [min]="0"
-            placeholder="Enter quantity"
-            styleClass="w-full">
-          </p-inputNumber>
+          <p-floatlabel variant="on">
+            <p-inputNumber
+              [formControl]="getQuantityControl(i)"
+              [min]="0"
+              styleClass="w-full">
+            </p-inputNumber>
+            <label>New Quantity</label>
+          </p-floatlabel>
 
           <small class="p-error" *ngIf="getQuantityControl(i).touched && getQuantityControl(i).invalid">
             Quantity must be 0 or more

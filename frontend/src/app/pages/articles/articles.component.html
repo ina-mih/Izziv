@@ -1,44 +1,80 @@
 <p-card class="mt-4 p-4">
   <h2>Articles</h2>
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-column gap-3 mt-3">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-column gap-4 mt-3">
 
-    <div class="flex flex-column">
-      <label for="name">Name</label>
-      <input pInputText id="name" formControlName="name" placeholder="Name (3 to 10 chars)" />
+    <div class="flex flex-column w-full">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          class="w-full"
+          autocomplete="off"
+        />
+        <label for="name">Name</label>
+      </p-floatlabel>
+
       <small class="p-error" *ngIf="f['name'].touched && f['name'].invalid">
         Name is required (3–10 characters)
       </small>
     </div>
 
-    <div class="flex flex-column">
-      <label for="description">Description</label>
-      <input pInputText id="description" formControlName="description" placeholder="Description (max 20 chars)" />
+    <div class="flex flex-column w-full">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="description"
+          formControlName="description"
+          class="w-full"
+          autocomplete="off"
+        />
+        <label for="description">Description</label>
+      </p-floatlabel>
+
       <small class="p-error" *ngIf="f['description'].touched && f['description'].invalid">
         Description is limited to 20 characters maximum
       </small>
     </div>
 
-    <div class="flex flex-column">
-      <label for="ean">EAN</label>
-      <input pInputText id="ean" formControlName="ean" placeholder="EAN (8–13 digits)" />
+    <div class="flex flex-column w-full">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="ean"
+          formControlName="ean"
+          class="w-full"
+          autocomplete="off"
+        />
+        <label for="ean">EAN</label>
+      </p-floatlabel>
+
       <small class="p-error" *ngIf="f['ean'].touched && f['ean'].invalid">
         EAN must be 8–13 digits
       </small>
     </div>
 
-    <div class="flex flex-column">
-      <label for="unit">Unit</label>
-      <input pInputText id="unit" formControlName="unit" placeholder="Unit" />
+    <div class="flex flex-column w-full">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="unit"
+          formControlName="unit"
+          class="w-full"
+          autocomplete="off"
+        />
+        <label for="unit">Unit</label>
+      </p-floatlabel>
+
       <small class="p-error" *ngIf="f['unit'].touched && f['unit'].invalid">
         Unit is required
       </small>
     </div>
 
-    <p-button 
-      label="{{ form.value.id ? 'Update' : 'Create' }}" 
-      type="submit" 
-      [disabled]="form.invalid || !form.dirty" 
+    <p-button
+      label="{{ form.value.id ? 'Update' : 'Create' }}"
+      type="submit"
+      [disabled]="form.invalid || !form.dirty"
       class="mt-2 w-full">
     </p-button>
 

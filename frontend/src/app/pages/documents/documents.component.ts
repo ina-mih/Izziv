@@ -15,13 +15,14 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
   imports: [CommonModule, ItemsTableComponent, FormsModule, ReactiveFormsModule,
     InputTextModule, InputNumberModule, SelectModule,
-    ButtonModule, CardModule, TableModule, TagModule
+    ButtonModule, CardModule, TableModule, TagModule, FloatLabelModule
   ],
   templateUrl: './documents.component.html'
 })
