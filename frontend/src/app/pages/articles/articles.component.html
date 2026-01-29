@@ -1,47 +1,82 @@
-<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
-  <h1>Articles</h1>
-</header>
+<p-card class="mt-4 p-4">
+  <h2>Articles</h2>
 
-<form [formGroup]="form" (ngSubmit)="submit()" class="p-3 mb-3 mt-4">
-  <input class="form-control mb-2" formControlName="name" placeholder="Name (3 to 10 chars)">
-  <div class="text-danger mb-2"
-       *ngIf="f['name'].touched && f['name'].invalid">
-    Name is required (between 3 and 10 characters)
-  </div>
-  <input class="form-control mb-2" formControlName="description" placeholder="Description (max 20 chars)">
-  <div class="text-danger mb-2"
-       *ngIf="f['description'].touched && f['description'].invalid">
-    Description is limited to 20 characters maximum
-  </div>
-  <input class="form-control mb-2" formControlName="ean" placeholder="EAN (8 to 13 digits)">
-  <div class="text-danger mb-2"
-       *ngIf="f['ean'].touched && f['ean'].invalid">
-    EAN must be 8–13 digits
-  </div>
-  <input class="form-control mb-2" formControlName="unit" placeholder="Unit">
-  <div class="text-danger mb-2"
-       *ngIf="f['unit'].touched && f['unit'].invalid">
-    Unit is required
-  </div>
-  <button class="btn btn-primary" [disabled]="form.invalid || !form.dirty">
-    {{ form.value.id ? 'Update' : 'Create' }}
-  </button>
-</form>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-column gap-3 mt-3">
 
-<table class="p-3 table table-bordered">
-  <tr>
-    <th>Name</th>
-    <th>EAN</th>
-    <th>Unit</th>
-    <th>Actions</th>
-  </tr>
-  <tr *ngFor="let a of articles">
-    <td>{{ a.name }}</td>
-    <td>{{ a.ean }}</td>
-    <td>{{ a.unit }}</td>
-    <td>
-      <button class="btn btn-sm btn-warning me-2" (click)="edit(a)">Edit</button>
-      <button class="btn btn-sm btn-danger" (click)="delete(a.id)">Delete</button>
-    </td>
-  </tr>
-</table>
+    <div class="flex flex-column">
+      <label for="name">Name</label>
+      <input pInputText id="name" formControlName="name" placeholder="Name (3 to 10 chars)" />
+      <small class="p-error" *ngIf="f['name'].touched && f['name'].invalid">
+        Name is required (3–10 characters)
+      </small>
+    </div>
+
+    <div class="flex flex-column">
+      <label for="description">Description</label>
+      <input pInputText id="description" formControlName="description" placeholder="Description (max 20 chars)" />
+      <small class="p-error" *ngIf="f['description'].touched && f['description'].invalid">
+        Description is limited to 20 characters maximum
+      </small>
+    </div>
+
+    <div class="flex flex-column">
+      <label for="ean">EAN</label>
+      <input pInputText id="ean" formControlName="ean" placeholder="EAN (8–13 digits)" />
+      <small class="p-error" *ngIf="f['ean'].touched && f['ean'].invalid">
+        EAN must be 8–13 digits
+      </small>
+    </div>
+
+    <div class="flex flex-column">
+      <label for="unit">Unit</label>
+      <input pInputText id="unit" formControlName="unit" placeholder="Unit" />
+      <small class="p-error" *ngIf="f['unit'].touched && f['unit'].invalid">
+        Unit is required
+      </small>
+    </div>
+
+    <p-button 
+      label="{{ form.value.id ? 'Update' : 'Create' }}" 
+      type="submit" 
+      [disabled]="form.invalid || !form.dirty" 
+      class="mt-2 w-full">
+    </p-button>
+
+  </form>
+</p-card>
+
+<p-card class="mt-4 p-4">
+  <p-table [value]="articles">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>EAN</th>
+        <th>Unit</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-article>
+      <tr>
+        <td>{{ article.name }}</td>
+        <td>{{ article.ean }}</td>
+        <td>{{ article.unit }}</td>
+        <td class="flex gap-2">
+          <p-button 
+            label="Edit" 
+            icon="pi pi-pencil" 
+            class="p-button-sm p-button-warning" 
+            (onClick)="edit(article)">
+          </p-button>
+          <p-button
+            label="Delete"
+            icon="pi pi-trash"
+            iconPos="left"
+            severity="danger"
+            class="p-button-sm"
+            (onClick)="delete(article.id)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

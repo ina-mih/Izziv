@@ -1,41 +1,37 @@
-<div class="container mt-5">
-  <h2>Register</h2>
+<div class="flex justify-content-center mt-6">
+  <p-card styleClass="w-full sm:w-6 md:w-4 lg:w-3 p-4">
+    <h2 class="text-center mb-4">Register</h2>
 
-  <form [formGroup]="form" (ngSubmit)="register()">
-    <div class="mb-2">
-      <input
-        type="email"
-        class="form-control"
-        placeholder="Email"
-        formControlName="email">
-        <div class="text-danger mb-2" *ngIf="f['email'].touched && f['email'].invalid">
-          <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-          <div *ngIf="f['email'].errors?.['email']">Enter a valid email</div>
-        </div>
-    </div>
+    <form [formGroup]="form" (ngSubmit)="register()" class="flex flex-column gap-3">
 
-    <div class="mb-2">
-      <input
-        type="password"
-        class="form-control"
-        placeholder="Password"
-        formControlName="password">
-      <div class="text-danger mb-2" *ngIf="f['password'].touched && f['password'].invalid">
-        <div *ngIf="f['password'].errors?.['required']">Password is required</div>
-        <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
+      <div class="flex flex-column">
+        <label for="email">Email</label>
+        <input pInputText id="email" formControlName="email" placeholder="Enter your email" />
+        <small class="p-error" *ngIf="f['email'].touched && f['email'].invalid">
+          <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+          <span *ngIf="f['email'].errors?.['email']">Enter a valid email</span>
+        </small>
       </div>
+
+      <div class="flex flex-column">
+        <label for="password">Password</label>
+        <p-password id="password" formControlName="password" feedback="false" placeholder="Enter your password"></p-password>
+        <small class="p-error" *ngIf="f['password'].touched && f['password'].invalid">
+          <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+          <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+        </small>
+      </div>
+
+      <p-button label="Register" type="submit" [disabled]="form.invalid" class="mt-2 w-full"></p-button>
+
+    </form>
+
+    <p class="text-success mt-2 text-center" *ngIf="success">{{ success }}</p>
+    <p class="p-error mt-2 text-center" *ngIf="error">{{ error }}</p>
+
+    <div class="text-center mt-4">
+      <span>Already have an account? </span>
+      <a routerLink="/login">Login here</a>
     </div>
-
-    <button class="btn btn-primary mb-2" (click)="register()" [disabled]="form.invalid">
-      Register
-    </button>
-  </form>
-
-  <p *ngIf="error" class="text-danger">{{ error }}</p>
-  <p *ngIf="success" class="text-success">{{ success }}</p>
-  <hr>
-  <p>
-    Already have an account?
-    <a routerLink="/login">Login here</a>
-  </p>
+  </p-card>
 </div>

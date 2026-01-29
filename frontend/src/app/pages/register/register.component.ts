@@ -5,10 +5,22 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api';
 import { RouterModule } from '@angular/router';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { RippleModule } from 'primeng/ripple';
+
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    CardModule,
+    RippleModule
+  ],
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {

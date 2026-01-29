@@ -29,3 +29,11 @@
 .toast-top-center {
   top: 10px;
 }
+
+p-password {
+  width: 100%;
+}
+
+p-password .p-inputtext {
+  width: 100% !important;
+}

@@ -2,91 +2,160 @@
   <h1>Create Document</h1>
 </header>
 
-<div class="container mt-4 p-3 mb-3">
-  <div class="p-3 mb-3" [formGroup]="documentForm">
-    <input class="form-control mb-2" formControlName="code" placeholder="Document code (ex. DOC-001)">
-  </div>
-  <div class="p-3 mb-3" [formGroup]="itemForm">
-    <h3>Add Items</h3>
-    <select class="form-select mb-2" formControlName="article_id">
-      <option value="" disabled selected>Select an article</option>
-      <option *ngFor="let a of articles" [value]="a.id">{{ a.name }}</option>
-    </select>
-    <input formControlName="quantity" type="number" placeholder="Quantity" class="form-control mb-2">
+<div class="container mt-4">
 
-    <select class="form-select mb-2" formControlName="from_location_id">
-      <option value="" disabled selected>From Location</option>
-      <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
-    </select>
+  <p-card header="Create Document" class="mb-4">
+    <div [formGroup]="documentForm">
+      <input
+        pInputText
+        formControlName="code"
+        placeholder="Document code (ex. DOC-001)"
+        class="w-full mb-3">
+    </div>
 
-    <select class="form-select mb-2" formControlName="to_location_id">
-      <option value="" disabled selected>To Location</option>
-      <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
-    </select>
+    <p-card header="Add Items" class="mb-4">
+      <div [formGroup]="itemForm">
 
-    <button [disabled]="itemForm.invalid" class="btn btn-success mb-3" (click)="addItem()">Add Item</button>
-    <label class="p-3">Multiple items can be added!</label>
-  </div>
+        <p-select
+          formControlName="article_id"
+          [options]="articles"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select an article"
+          class="w-full mb-3">
+        </p-select>
 
-  <app-items-table
-    [items]="itemControls"
-    [articleMap]="articleMap"
-    [locationMap]="locationMap"
-    [removable]="true"
-    (remove)="items.removeAt($event)">
-  </app-items-table>
+        <p-inputNumber
+          formControlName="quantity"
+          [min]="1"
+          placeholder="Quantity"
+          styleClass="w-full mb-3">
+        </p-inputNumber>
 
-  <button [disabled]="documentForm.invalid" class="btn btn-primary" (click)="createDocument()">Create Document</button>
+        <p-select
+          formControlName="from_location_id"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="From location"
+          class="w-full mb-3">
+        </p-select>
+
+        <p-select
+          formControlName="to_location_id"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="To location"
+          class="w-full mb-3">
+        </p-select>
+
+        <p-button
+          label="Add Item"
+          icon="pi pi-plus"
+          severity="success"
+          [disabled]="itemForm.invalid"
+          (onClick)="addItem()">
+        </p-button>
+
+        <small class="block mt-2 text-600">
+          Multiple items can be added
+        </small>
+      </div>
+
+      <div *ngIf="itemControls.length > 0" class="mt-4">
+        <app-items-table
+          [items]="itemControls"
+          [articleMap]="articleMap"
+          [locationMap]="locationMap"
+          [removable]="true"
+          (remove)="items.removeAt($event)">
+        </app-items-table>
+      </div>
+
+    </p-card>
+  </p-card>
+
+  <p-button
+    label="Create Document"
+    icon="pi pi-check"
+    severity="primary"
+    [disabled]="documentForm.invalid"
+    (onClick)="createDocument()">
+  </p-button>
+
 </div>
 
-<div *ngIf="isLoggedIn()">
-  <h3>Existing Documents</h3>
+<div *ngIf="isLoggedIn()" class="mt-4">
 
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Created</th>
-        <th>Status</th>
-        <th>Confirmed Date</th>
-        <th>Confirmed By</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <p-card header="Existing Documents">
 
-    <tbody>
-      <ng-container *ngFor="let d of documents">
-        <!-- Document row -->
-        <tr (click)="d.showItems = !d.showItems" style="cursor:pointer;">
+    <p-table
+      [value]="documents"
+      dataKey="id"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Code</th>
+          <th>Created</th>
+          <th>Status</th>
+          <th>Confirmed Date</th>
+          <th>Confirmed By</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-d>
+        <tr (click)="d.showItems = !d.showItems" style="cursor:pointer">
+
           <td>{{ d.code }}</td>
+
           <td>{{ d.created_date | date:'short' }}</td>
-          <td [ngStyle]="{'background-color': d.status==='CONFIRMED' ? '#a2f6a2' : '#faabab'}">
-            {{ d.status }}
-          </td>
-          <td>{{ d.confirmed_date ? (d.confirmed_date | date:'short') : '-' }}</td>
-          <td>{{ d.confirmed_by_email || '-' }}</td>
+
           <td>
-            <button *ngIf="d.status === 'NOT CONFIRMED'" class="btn btn-sm btn-warning"
-              (click)="confirmExisting(d.id); $event.stopPropagation();">
-              Confirm
-            </button>
+            <p-tag
+              [value]="d.status"
+              [severity]="d.status === 'CONFIRMED' ? 'success' : 'danger'">
+            </p-tag>
           </td>
+
+          <td>
+            {{ d.confirmed_date ? (d.confirmed_date | date:'short') : '-' }}
+          </td>
+
+          <td>{{ d.confirmed_by_email || '-' }}</td>
+
+          <td>
+            <p-button
+              *ngIf="d.status === 'NOT CONFIRMED'"
+              label="Confirm"
+              icon="pi pi-check"
+              severity="info"
+              size="small"
+              (onClick)="confirmExisting(d.id); $event.stopPropagation()">
+            </p-button>
+          </td>
+
         </tr>
 
-        <!-- Items row -->
         <tr *ngIf="d.showItems">
           <td colspan="6">
-            <h5>Items in {{ d.code }}:</h5>
 
-            <app-items-table
-              [items]="d.items"
-              [articleMap]="articleMap"
-              [locationMap]="locationMap">
-            </app-items-table>
+            <p-card class="mt-2" header="Items in {{ d.code }}">
+              <app-items-table
+                [items]="d.items"
+                [articleMap]="articleMap"
+                [locationMap]="locationMap">
+              </app-items-table>
+            </p-card>
 
           </td>
         </tr>
-      </ng-container>
-    </tbody>
-  </table>
+      </ng-template>
+
+    </p-table>
+
+  </p-card>
 </div>

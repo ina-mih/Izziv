@@ -8,10 +8,21 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } fr
 import { ToastrService } from 'ngx-toastr';
 import { ItemsTableComponent } from '../../components/items-table.component';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule, ItemsTableComponent, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, ItemsTableComponent, FormsModule, ReactiveFormsModule,
+    InputTextModule, InputNumberModule, SelectModule,
+    ButtonModule, CardModule, TableModule, TagModule
+  ],
   templateUrl: './documents.component.html'
 })
 export class DocumentsComponent implements OnInit {

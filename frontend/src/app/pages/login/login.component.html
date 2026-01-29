@@ -1,22 +1,41 @@
-<div class="container mt-5">
-  <h2>Login</h2>
-  <form [formGroup]="form" (ngSubmit)="login()">
-    <input class="form-control mb-2" formControlName="email" placeholder="Email">
-    <div class="text-danger mb-2" *ngIf="f['email'].touched && f['email'].invalid">
-      <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-      <div *ngIf="f['email'].errors?.['email']">Enter a valid email</div>
+<div class="flex justify-content-center mt-6">
+  <p-card styleClass="w-full sm:w-6 md:w-4 lg:w-3 p-4">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <form [formGroup]="form" (ngSubmit)="login()" class="flex flex-column gap-3">
+
+      <div class="flex flex-column w-full">
+        <p-floatlabel variant="on">
+          <input pInputText id="email" formControlName="email" autocomplete="off" class="w-full"/>
+          <label for="email">Email</label>
+        </p-floatlabel>
+        <small class="p-error" *ngIf="f['email'].touched && f['email'].invalid">
+          <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+          <span *ngIf="f['email'].errors?.['email']">Enter a valid email</span>
+        </small>
+      </div>
+
+      <div class="flex flex-column w-full">
+        <p-floatlabel variant="on">
+          <p-password id="password" formControlName="password" feedback="false"></p-password>
+          <label for="password">Password</label>
+        </p-floatlabel>
+
+        <small class="p-error" *ngIf="f['password'].touched && f['password'].invalid">
+          <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+          <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+        </small>
+      </div>
+
+      <p-button label="Login" type="submit" [disabled]="form.invalid" class="mt-2 w-full"></p-button>
+
+    </form>
+
+    <div class="text-center mt-4">
+      <span>Don’t have an account? </span>
+      <a routerLink="/register">Register here</a>
     </div>
-    <input class="form-control mb-2" formControlName="password" type="password" placeholder="Password">
-    <div class="text-danger mb-2" *ngIf="f['password'].touched && f['password'].invalid">
-      <div *ngIf="f['password'].errors?.['required']">Password is required</div>
-      <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
-    </div>
-    <button class="btn btn-primary" [disabled]="form.invalid">Login</button>
-  </form>
-  <hr>
-  <p>
-    Don’t have an account?
-    <a routerLink="/register">Register here</a>
-  </p>
-  <div class="text-danger mt-2">{{ error }}</div>
+
+    <div class="p-error mt-2 text-center">{{ error }}</div>
+  </p-card>
 </div>

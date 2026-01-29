@@ -7,10 +7,13 @@ import { ToastrService } from 'ngx-toastr';
 import { ChangeDetectorRef } from '@angular/core';
 import { ItemsTableComponent } from '../../components/items-table.component';
 
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+
 @Component({
   selector: 'app-drafts',
   standalone: true,
-  imports: [CommonModule, ItemsTableComponent],
+  imports: [CommonModule, ItemsTableComponent, CardModule, ButtonModule],
   templateUrl: './drafts.component.html'
 })
 export class DraftsComponent implements OnInit {

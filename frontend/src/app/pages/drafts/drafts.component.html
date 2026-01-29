@@ -2,29 +2,46 @@
   <h1>Draft Documents</h1>
 </header>
 
-<div *ngFor="let d of drafts" class="card mb-3">
-  <div class="card-body">
-    <h5>{{ d.code }}</h5>
+<div class="container mt-4">
 
-    <app-items-table
-      [items]="d.items"
-      [articleMap]="articleMap"
-      [locationMap]="locationMap"
-      [removable]="true"
-      (remove)="removeDraftItem(d.id, $event)">
-    </app-items-table>
+  <ng-container *ngIf="drafts.length; else noDrafts">
+    <p-card *ngFor="let d of drafts" class="mb-3">
+      <div class="flex justify-content-between align-items-center">
+        <h5>{{ d.code }}</h5>
 
-    <p *ngIf="!d.items.length">No items in this draft</p>
+        <div class="flex gap-2">
+          <p-button
+            label="Convert"
+            icon="pi pi-check"
+            severity="success"
+            size="small"
+            (onClick)="convert(d)">
+          </p-button>
 
-    <button class="btn btn-primary me-2 mt-2" (click)="convert(d)">
-      Convert to Document
-    </button>
+          <p-button
+            label="Remove"
+            icon="pi pi-trash"
+            severity="danger"
+            size="small"
+            (onClick)="removeDraft(d.id)">
+          </p-button>
+        </div>
+      </div>
 
-    <button class="btn btn-danger mt-2" (click)="removeDraft(d.id)">
-      Remove Draft
-    </button>
+      <app-items-table
+        [items]="d.items"
+        [articleMap]="articleMap"
+        [locationMap]="locationMap"
+        [removable]="true"
+        (remove)="removeDraftItem(d.id, $event)">
+      </app-items-table>
 
-  </div>
+      <p *ngIf="!d.items.length" class="text-600 mt-2">No items in this draft</p>
+    </p-card>
+  </ng-container>
+
+  <ng-template #noDrafts>
+    <p class="text-center text-600">No drafts available</p>
+  </ng-template>
+
 </div>
-
-<p *ngIf="!drafts.length">No drafts available</p>

@@ -3,10 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { RippleModule } from 'primeng/ripple';
+
 @Component({
   standalone: true,
   selector: 'app-articles',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,
+    InputTextModule, ButtonModule, CardModule, TableModule, RippleModule
+  ],
   templateUrl: './articles.component.html'
 })
 export class ArticlesComponent implements OnInit {

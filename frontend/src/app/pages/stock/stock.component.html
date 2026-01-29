@@ -1,32 +1,50 @@
-<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
-  <h1>Stock Overview</h1>
-</header>
+<p-card class="mt-4 p-4">
+  <h2>Stock Overview</h2>
 
-<table class="table table-bordered">
-  <tr>
-    <th>Article</th>
-    <th>Location</th>
-    <th>Quantity</th>
-    <th>New Quantity</th>
-    <th>Action</th>
-  </tr>
-  <tr *ngFor="let s of stock; let i = index">
-    <td>{{ s.article }}</td>
-    <td>{{ s.location }}</td>
-    <td>{{ s.quantity }}</td>
-    <td>
-      <input type="number"
-             class="form-control"
-             [formControl]="getQuantityControl(i)">
-    </td>
-    <td>
-      <button class="btn btn-primary"
-              (click)="updateStock(i)"
-              [disabled]="getQuantityControl(i).invalid">
-        Update
-      </button>
-    </td>
-  </tr>
-</table>
+  <p-table [value]="stock" *ngIf="stock.length > 0">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Article</th>
+        <th>Location</th>
+        <th>Current Quantity</th>
+        <th>New Quantity</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
 
-<p *ngIf="stock.length === 0">No stock available</p>
+    <ng-template pTemplate="body" let-s let-i="rowIndex">
+      <tr>
+        <td>{{ s.article }}</td>
+        <td>{{ s.location }}</td>
+        <td>{{ s.quantity }}</td>
+
+        <td>
+          <p-inputNumber
+            [formControl]="getQuantityControl(i)"
+            [min]="0"
+            placeholder="Enter quantity"
+            styleClass="w-full">
+          </p-inputNumber>
+
+          <small class="p-error" *ngIf="getQuantityControl(i).touched && getQuantityControl(i).invalid">
+            Quantity must be 0 or more
+          </small>
+        </td>
+
+        <td>
+          <p-button
+            label="Update"
+            icon="pi pi-save"
+            class="p-button-sm"
+            (onClick)="updateStock(i)"
+            [disabled]="getQuantityControl(i).invalid">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p *ngIf="stock.length === 0" class="mt-3 text-center">
+    No stock available
+  </p>
+</p-card>
