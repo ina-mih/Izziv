@@ -8,24 +8,51 @@ on:
 jobs:
   api-test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: warehouse_database
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         working-directory: backend
         run: npm install
 
-      - name: Start server
+      - name: Copy CI env
+        working-directory: backend
+        run: cp .env.ci .env
+
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "Waiting for MySQL..."
+          for i in {1..30}; do
+            mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break
+            sleep 2
+          done
+
+      - name: Initialize database
         working-directory: backend
         run: |
-          cp .env.ci .env
+          mysql -h 127.0.0.1 -u root -proot warehouse_database < warehouse_database.sql
+
+      - name: Start backend
+        working-directory: backend
+        run: |
           npm start &
           npx wait-on http://localhost:5000
 
