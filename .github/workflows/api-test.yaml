@@ -1,0 +1,30 @@
+name: Articles API Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start server
+        run: |
+          npm start &
+          npx wait-on http://localhost:5000
+
+      - name: Run Postman tests
+        run: npx newman run postman/articles-test.json
