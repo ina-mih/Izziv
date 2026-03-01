@@ -1,10 +1,3 @@
-name: Articles API Test
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-
 jobs:
   api-test:
     runs-on: ubuntu-latest
@@ -29,7 +22,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install backend dependencies
+      - name: Install dependencies
         working-directory: backend
         run: npm install
 
@@ -37,9 +30,8 @@ jobs:
         working-directory: backend
         run: cp .env.ci .env
 
-      - name: Wait for MySQL to be ready
+      - name: Wait for MySQL
         run: |
-          echo "Waiting for MySQL..."
           for i in {1..30}; do
             mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break
             sleep 2
@@ -47,8 +39,7 @@ jobs:
 
       - name: Initialize database
         working-directory: backend
-        run: |
-          mysql -h 127.0.0.1 -u root -proot warehouse_database < warehouse_database.sql
+        run: mysql -h 127.0.0.1 -u root -proot warehouse_database < warehouse_database.sql
 
       - name: Start backend
         working-directory: backend
