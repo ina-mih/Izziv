@@ -1,3 +1,10 @@
+name: Articles API Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
 jobs:
   api-test:
     runs-on: ubuntu-latest
