@@ -25,7 +25,6 @@ jobs:
       - name: Start server
         working-directory: backend
         run: |
-          cp .env.ci .env
           npm start &
           npx wait-on http://localhost:5000
 
