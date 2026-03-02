@@ -12,7 +12,7 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: 13122002Ina$
           MYSQL_DATABASE: warehouse_database
         ports:
           - 3306:3306
