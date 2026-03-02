@@ -50,7 +50,7 @@ jobs:
             mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break
             sleep 2
           done
-          mysql -h 127.0.0.1 -u root -proot warehouse_database < "Izziv - Copy/warehouse_database.sql"
+          mysql -h 127.0.0.1 -u root -proot warehouse_database < warehouse_database.sql
 
       - name: Start backend
         working-directory: backend
