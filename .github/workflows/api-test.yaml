@@ -40,17 +40,17 @@ jobs:
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do
-            mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break
+            mysql -h 127.0.0.1 -u root -p13122002Ina$ -e "SELECT 1" && break
             sleep 2
           done
 
       - name: Initialize database
         run: |
           for i in {1..30}; do
-            mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break
+            mysql -h 127.0.0.1 -u root -p13122002Ina$ -e "SELECT 1" && break
             sleep 2
           done
-          mysql -h 127.0.0.1 -u root -proot warehouse_database < warehouse_database.sql
+          mysql -h 127.0.0.1 -u root -p13122002Ina$ warehouse_database < warehouse_database.sql
 
       - name: Start backend
         working-directory: backend
